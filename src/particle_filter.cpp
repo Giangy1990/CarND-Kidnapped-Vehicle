@@ -23,7 +23,7 @@ using std::vector;
 
 void ParticleFilter::init(double x, double y, double theta, double std[]) {
   //Set the number of particles
-  num_particles = 1000;
+  num_particles = 200;
 
   // Set standard deviations for x, y, and theta
   double std_x = std[0];
@@ -55,7 +55,15 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
   std::default_random_engine gen;
   
   // temporary variable for the motion model computation
-  float k = velocity/yaw_rate;
+  bool complex_model = false;
+  double k;
+  if (fabs(yaw_rate) > std::numeric_limits<double>::epsilon()){
+    k = velocity/yaw_rate;
+    complex_model = true;
+  }
+  else{
+    k = velocity*delta_t;
+  }
   
   // Set standard deviations for x, y, and theta
   double std_x = std_pos[0];
@@ -66,10 +74,16 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
     Particle curr_particle = particles[particle_idx];
 
     // compute update using model
-    float phi = curr_particle.theta + yaw_rate*delta_t;
-    curr_particle.x += k*(sin(phi) - sin(curr_particle.theta));
-    curr_particle.y += k*(cos(curr_particle.theta) - cos(phi));
-    curr_particle.theta = phi;
+    if (complex_model){
+      float phi = curr_particle.theta + yaw_rate*delta_t;
+      curr_particle.x += k*(sin(phi) - sin(curr_particle.theta));
+      curr_particle.y += k*(cos(curr_particle.theta) - cos(phi));
+      curr_particle.theta = phi;
+    }
+    else{
+      curr_particle.x += k*cos(curr_particle.theta);
+      curr_particle.y += k*sin(curr_particle.theta);
+    }
     
     // add noise
     std::normal_distribution<double> dist_x(0, std_x);
