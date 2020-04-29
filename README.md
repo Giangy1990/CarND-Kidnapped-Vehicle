@@ -52,11 +52,12 @@ OUTPUT: values provided by the c++ program to the simulator
 [//]: # (Image References)
 
 [image1]: media/algo.png "algorithm"
-[image2]: media/null_yaw_rate.png "null_yaw_rate"
-[image3]: media/not_null_yaw_rate.png "not_null_yaw_rate"
+[image2]: media/null_yaw_rate.PNG "null_yaw_rate"
+[image3]: media/not_null_yaw_rate.PNG "not_null_yaw_rate"
 [image4]: media/multivariate_gaussian.PNG "multivariate_gaussian"
-[image5]: media/weight.png "weight"
-[image6]: media/np_10.png "np_10"
+[image5]: media/weight.PNG "weight"
+[image6]: media/np_10.PNG "np_10"
+[image7]: media/time_over_samples.png "time_over_samples"
 ---
 # Particle Filter
 The structure of the particle filter used in this project is showed below:
@@ -139,4 +140,7 @@ From the above results it is possible to affirm that:
 * with only 10 particles, the filter can localize the vehicle with a good accuracy.
 
 Since the autonomous driving requires a localization with an accuracy of about 10cm and a real time computation, it is possible to affirm that a filter with 200 particle is good enough to this purpose.\
+Here a 2D plot that resumes the execution time vs number of particles:\
+![alt text][image7]
+
 [Here](media/np_200.mp4) a video of the performances of a filter with 200 particles.
